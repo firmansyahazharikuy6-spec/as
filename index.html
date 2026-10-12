@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MyAI</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar">
+      <div class="brand">
+        <img src="assets/logo.svg" alt="" class="brand-logo" />
+        <span id="appName" class="brand-name">MyAI</span>
+        <span id="appVersion" class="version-badge"></span>
+      </div>
+      <button id="newChat" class="btn primary block">+ Chat baru</button>
+      <nav id="chatList" class="chat-list"></nav>
+      <div class="sidebar-footer">
+        <div id="account" class="account"></div>
+        <button id="openSettings" class="btn ghost block">⚙ Pengaturan</button>
+      </div>
+    </aside>
+    <div id="backdrop" class="backdrop"></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="toggleSidebar" class="icon-btn" aria-label="Menu">☰</button>
+        <div id="modelPicker" class="model-picker">
+          <button id="modelBtn" type="button" class="model-btn" aria-haspopup="listbox" aria-expanded="false">
+            <span id="modelBtnLogo" class="mlogo"></span>
+            <span class="model-btn-text">
+              <span id="modelBtnName">Memuat model…</span>
+              <span id="modelBtnSub" class="model-btn-sub"></span>
+            </span>
+            <span class="chev">▾</span>
+          </button>
+          <div id="modelMenu" class="model-menu hidden" role="listbox">
+            <input id="modelSearch" type="search" placeholder="Cari model… (qwen, claude, gemini, deepseek)" autocomplete="off" />
+            <div id="modelList" class="model-list"></div>
+          </div>
+        </div>
+      </header>
+
+      <div id="progress" class="progress hidden">
+        <div class="progress-bar"><div id="progressFill"></div></div>
+        <span id="progressText"></span>
+      </div>
+
+      <section id="messages" class="messages"></section>
+
+      <form id="composer" class="composer">
+        <textarea id="input" rows="1" placeholder="Ketik pesan… (Enter = kirim, Shift+Enter = baris baru)"></textarea>
+        <button id="sendBtn" type="submit" class="btn primary">Kirim</button>
+      </form>
+      <p class="hint">AI bisa membuat kesalahan. Periksa kembali informasi penting.</p>
+    </main>
+  </div>
+
+  <dialog id="settingsDialog">
+    <form id="settingsForm" method="dialog">
+      <h2>Pengaturan</h2>
+      <p id="syncNote" class="muted">API key disimpan di browser ini. Masuk dengan Google agar pengaturan & API key tersinkron otomatis ke semua perangkatmu.</p>
+
+      <label>Google Gemini API key <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">ambil gratis</a>
+        <input name="gemini" type="password" autocomplete="off" placeholder="AIza..." />
+      </label>
+      <label>Groq API key <a href="https://console.groq.com/keys" target="_blank" rel="noopener">ambil gratis</a>
+        <input name="groq" type="password" autocomplete="off" placeholder="gsk_..." />
+      </label>
+      <label>OpenRouter API key <a href="https://openrouter.ai/keys" target="_blank" rel="noopener">ambil gratis</a>
+        <input name="openrouter" type="password" autocomplete="off" placeholder="sk-or-..." />
+      </label>
+      <label class="check"><input name="showPaid" type="checkbox" /> Tampilkan model Premium OpenRouter (Claude, GPT, Qwen Max, DeepSeek V4, Grok, dll — butuh kredit)</label>
+
+      <label>System prompt (kepribadian AI)
+        <textarea name="systemPrompt" rows="4"></textarea>
+      </label>
+      <label>Temperature (kreativitas): <span id="tempValue"></span>
+        <input name="temperature" type="range" min="0" max="2" step="0.1" />
+      </label>
+
+      <div class="dialog-actions">
+        <button id="cancelSettings" type="button" class="btn ghost">Batal</button>
+        <button value="save" class="btn primary">Simpan</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast hidden"></div>
+</body>
+</html>
